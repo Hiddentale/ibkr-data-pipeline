@@ -1,0 +1,79 @@
+* text=auto eol=lf
+
+# Python files
+*.py text eol=lf diff=python
+*.pyw text eol=lf diff=python
+*.pyi text eol=lf diff=python
+*.pyx text eol=lf
+
+# Python configuration files
+*.toml text eol=lf
+*.cfg text eol=lf
+*.ini text eol=lf
+requirements*.txt text eol=lf
+pyproject.toml text eol=lf
+
+# Shell scripts
+*.sh text eol=lf
+*.bash text eol=lf
+
+# Windows scripts
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Documentation
+*.md text eol=lf
+*.txt text eol=lf
+LICENSE text eol=lf
+README* text eol=lf
+
+# SQL files
+*.sql text eol=lf
+
+# Data formats
+*.json text eol=lf
+*.xml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.csv text eol=lf
+
+# Environment files
+.env* text eol=lf
+.envrc text eol=lf
+
+# Git files
+.gitattributes text eol=lf
+.gitignore text eol=lf
+.gitkeep text eol=lf
+
+# Archives and binaries
+*.7z binary
+*.gz binary
+*.jar binary
+*.rar binary
+*.tar binary
+*.zip binary
+
+# Images
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg text eol=lf
+
+# Python compiled files
+*.pyc binary
+*.pyo binary
+*.pyd binary
+*.so binary
+*.dll binary
+*.dylib binary
+*.exe binary
+
+# Lock files
+*.lock text eol=lf -diff
+uv.lock text eol=lf -diff
+poetry.lock text eol=lf -diff
+Pipfile.lock text eol=lf -diff
