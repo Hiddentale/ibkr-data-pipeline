@@ -9,7 +9,7 @@ def get_connection():
         database="trading",
         user="postgres",
         password="trading123",
-        port=5432,
+        port=5433,
     )
 
 

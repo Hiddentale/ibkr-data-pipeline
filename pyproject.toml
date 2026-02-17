@@ -11,6 +11,9 @@ dependencies = [
     "ib_async>=0.3.0",
     "psycopg2-binary>=2.9.0",
     "polars>=0.20.0",
+    "plotly>=5.18.0",
+    "jupyter>=1.0.0",
+    "notebook>=7.0.0",
 ]
 
 [project.optional-dependencies]

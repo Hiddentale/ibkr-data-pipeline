@@ -1,6 +1,12 @@
+import logging
+
 import psycopg2
 from ib_async import IB, Index
 from psycopg2.extras import execute_values
+
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 
 class IBKRDataCollector:
@@ -22,7 +28,7 @@ class IBKRDataCollector:
             "database": "trading",
             "user": "postgres",
             "password": "trading123",
-            "port": 5432,
+            "port": 5433,
         }
         self.conn = psycopg2.connect(**config)
         self.conn.autocommit = True
@@ -45,6 +51,7 @@ class IBKRDataCollector:
 
     def fetch_historical_data(self, symbol="DAX", years=2):
         """Pull years of EUREX data for all timeframes"""
+        logging.info(f"Starting historical data fetch for {symbol} ({years} years)")
 
         if symbol == "DAX":
             contract = Index("DAX", "EUREX", "EUR")
@@ -52,12 +59,19 @@ class IBKRDataCollector:
             raise ValueError(
                 f"Unsupported symbol: {symbol}. Currently only DAX is supported."
             )
+
+        logging.info("Qualifying contract...")
         self.ib.qualifyContracts(contract)
+        logging.info(f"Contract qualified: {contract}")
 
         for timeframe_name, bar_size in [
             ("1H", "1 hour"),
             ("1D", "1 day"),
         ]:
+            logging.info(
+                f"Requesting {timeframe_name} data (bar_size={bar_size}, duration={years}Y)..."
+            )
+
             bars = self.ib.reqHistoricalData(
                 contract,
                 endDateTime="",
@@ -68,14 +82,21 @@ class IBKRDataCollector:
                 formatDate=1,
             )
 
+            logging.info(
+                f"Received {len(bars) if bars else 0} bars for {timeframe_name}"
+            )
+
             if not bars:
-                print(f"No data returned for {timeframe_name}")
+                logging.warning(f"No data returned for {timeframe_name}")
                 continue
 
+            logging.info(f"Storing {len(bars)} {timeframe_name} bars to database...")
             self._store_bars(bars, timeframe_name, symbol)
-            print(f"Stored {len(bars)} {timeframe_name} bars")
+            logging.info(f"Stored {len(bars)} {timeframe_name} bars successfully")
 
+        logging.info("Resampling 1H data to 3H...")
         self._resample_to_3h(symbol)
+        logging.info("3H resampling complete")
 
     def _store_bars(self, bars, timeframe, symbol):
         """Store OHLC bars in database using bulk insert"""
