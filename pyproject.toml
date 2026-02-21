@@ -23,7 +23,6 @@ dev = [
     "ruff>=0.3.0",
     "mypy>=1.8.0",
 ]
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
@@ -38,6 +37,9 @@ target-version = "py310"
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
 ignore = []
+
+[tool.ruff.lint.isort]
+known-first-party = ["db", "data_ingestion", "queries", "vwap", "ibkr_setup"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
